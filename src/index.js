@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route, Link, useSearchParams } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useSearchParams } from "react-router-dom";
 
 const swCharacters = [
   { name: "Luke Skywalker", type: "Jedi" },
@@ -11,12 +11,17 @@ const swCharacters = [
 function HomePage() {
 
   const [searchParams , setSearchParams ] = useSearchParams()
-  console.log(searchParams);  // http://localhost:3000/characters?type=syth >> it console.logs:  //URLSearchParams {size: 1}
-  console.log(searchParams.get('type'));// http://localhost:3000/characters?type=syth  >> it console.logs: "syth"
-  console.log(searchParams.toString());// http://localhost:3000/characters?type=syth  >> it console.logs: "type=syth"
+  const typeFilter = searchParams.get('type');
+  // console.log(searchParams);  // http://localhost:3000/characters?type=syth >> it console.logs:  //URLSearchParams {size: 1}
+  // console.log(searchParams.toString());// http://localhost:3000/characters?type=syth  >> it console.logs: "type=syth"
+  //console.log(searchParams.get('type'));// http://localhost:3000/characters?type=syth  >> it console.logs: "syth"
 
+  const displayedCharacters = typeFilter
+  ? swCharacters.filter(char => char.type.toLowerCase() === typeFilter)
+  :swCharacters
 
-  const charEls = swCharacters
+  const charEls = displayedCharacters
+
     .map(char => (
       <div key={char.name}>
         <h3
@@ -28,10 +33,11 @@ function HomePage() {
         <hr />
       </div>
     ))
+  
 
   return (
     <main>
-      <h2>Home</h2>
+      <h2>Star Wars</h2>
       {charEls}
     </main>
   );
